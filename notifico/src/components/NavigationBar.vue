@@ -13,7 +13,12 @@
 					title="Mario Rossi"
 					>
 				<template v-slot:append>
-					<v-icon icon="mdi-theme-light-dark" class="my-2"></v-icon>
+					<v-icon 
+							icon="mdi-theme-light-dark" 
+							class="my-2"
+							@click="toggleTheme"
+							>
+					</v-icon>
 				</template>
 			</v-list-item>
 		</v-list>
@@ -45,7 +50,16 @@
 <script>
 import hackerImg from '../assets/hacker.png';
 
+import { useTheme } from 'vuetify/lib/framework.mjs';
+
 export default {
+	setup() {
+		const theme = useTheme();
+		const toggleTheme = () => {
+			theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark';
+		}
+		return { toggleTheme };
+	},
 	data() {
 		return {
 			avatar: hackerImg,
@@ -62,7 +76,10 @@ export default {
 				text: 'Impostazioni',
 				route: '/settings',
 			}]
-		}
+		},
+	},
+	methods: {
+		
 	}
 }
 </script>
