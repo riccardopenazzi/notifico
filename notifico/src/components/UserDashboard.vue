@@ -9,7 +9,8 @@
 			</v-col>
 			<v-col cols="1"></v-col>
 			<v-col cols="4">
-				<NextEventsPanel></NextEventsPanel>
+				<AddEventPanel></AddEventPanel>
+				<NextEventsPanel class="mt-5"></NextEventsPanel>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -18,6 +19,7 @@
 <script>
 import CalendarComponent from './CalendarComponent.vue';
 import NextEventsPanel from './NextEventsPanel.vue';
+import AddEventPanel from './AddEventPanel.vue';
 
 export default {
 	data() {
@@ -30,6 +32,7 @@ export default {
 	components: {
 		CalendarComponent,
 		NextEventsPanel,
+		AddEventPanel,
 	}
 }
 </script>
