@@ -24,10 +24,19 @@ export default {
                 plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
                 initialView: 'dayGridMonth',
                 locale: itLocale,
-                events: [
-                    /* { title: 'Evento 1', start: '2025-02-10' },
-                    { title: 'Evento 2', start: '2025-02-12' } */
-                ],
+                displayEventTime: false,
+                events:[{
+                    title: 'Bollo auto Opel',
+                    date: new Date(2025, 1, 5),
+                },
+                {
+                    title: 'Tasse università',
+                    date: new Date(2025, 1, 15),
+                },
+                {
+                    title: 'Assicurazione moto',
+                    date: new Date(2025, 1, 25),
+                }],
             }
         }
     },
