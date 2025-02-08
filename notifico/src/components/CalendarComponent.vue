@@ -1,5 +1,5 @@
 <template>
-    <v-card class="calendar-container">
+    <v-card class="pa-6">
         <!-- <v-calendar
                 :weekdays="[0, 1, 2, 3, 4, 5, 6]"
                 view-mode="month"
@@ -27,7 +27,7 @@ export default {
                 events: [
                     /* { title: 'Evento 1', start: '2025-02-10' },
                     { title: 'Evento 2', start: '2025-02-12' } */
-                ]
+                ],
             }
         }
     },
