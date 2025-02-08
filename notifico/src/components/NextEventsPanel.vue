@@ -4,7 +4,7 @@
             <v-list-item
                     v-for="(event, index) in nextEvenetsList"
                     :key="index"
-                    :title="event.title"
+                    :title="formatDate(event.date) + ' - ' + event.title"
                     >
                 <template v-slot:prepend>
                     <v-icon icon="mdi-calendar" color="yellow"></v-icon>
@@ -19,6 +19,9 @@
 </template>
 
 <script>
+import { format } from 'date-fns';
+import { it } from 'date-fns/locale';
+
 export default {
     data() {
         return {
@@ -29,12 +32,20 @@ export default {
         nextEvenetsList() {
             return [{
                 title: 'Bollo auto Opel',
+                date: new Date(),
             },{
                 title: 'Tasse università',
+                date: new Date(),
             },{
                 title: 'Assicurazione moto',
+                date: new Date(),
             }]
         }
-    }
+    },
+    methods: {
+        formatDate(date) {
+            return format(date, "dd/MM/yyyy", { locale: it });
+        }
+    },
 }
 </script>

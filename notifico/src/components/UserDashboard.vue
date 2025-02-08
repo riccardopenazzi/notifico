@@ -4,7 +4,7 @@
 			<h1 class="ml-3 mt-2">Dashboard di Riccardo</h1>
 		</v-row>
 		<v-row>
-			<v-col cols="6">
+			<v-col cols="7">
 				<CalendarComponent></CalendarComponent>
 			</v-col>
 			<v-col cols="4">
