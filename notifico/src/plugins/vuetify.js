@@ -5,6 +5,21 @@ import 'vuetify/styles'
 // Vuetify
 import { createVuetify } from 'vuetify'
 
-export default createVuetify(
-  // https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-)
+// Components
+import { VCalendar } from 'vuetify/labs/VCalendar'
+
+import { it } from 'vuetify/locale'
+
+export default createVuetify({
+  theme: {
+    defaultTheme: 'dark',
+  },
+  components: {
+    VCalendar,
+  },
+  locale: {
+    locale: 'it',
+    fallback: 'it',
+    messages: { it },
+  },
+})
