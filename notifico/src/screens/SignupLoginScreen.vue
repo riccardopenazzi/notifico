@@ -45,8 +45,8 @@ import { mapStores, mapWritableState } from 'pinia';
 
 import { useUiStore } from '../stores/ui-store';
 
-import SignupForm from './SignupForm.vue';
-import LoginForm from './LoginForm.vue';
+import SignupForm from '../components/SignupForm.vue';
+import LoginForm from '../components/LoginForm.vue';
 
 export default {
     data() {

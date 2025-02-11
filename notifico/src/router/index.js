@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UserDashboard from '../components/UserDashboard.vue'
-import SignupLoginScreen from '../components/SignupLoginScreen.vue'
+import UserDashboard from '../screens/UserDashboard.vue'
+import SignupLoginScreen from '../screens/SignupLoginScreen.vue'
 
 const router = createRouter({
   history: createWebHistory(),

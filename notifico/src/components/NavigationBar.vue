@@ -1,50 +1,52 @@
 <template>
-	<v-navigation-drawer
-			expand-on-hover
-			rail
-			mobile-breakpoint="md"
-			>
-		<v-list
-				class="my-1"
+	<div>
+		<v-navigation-drawer
+				expand-on-hover
+				rail
+				mobile-breakpoint="md"
 				>
-			<v-list-item
-					:prepend-avatar="avatar"
-					subtitle="mariorossi@email.com"
-					title="Mario Rossi"
-					>
-				<template v-slot:append>
-					<v-icon 
-							icon="mdi-theme-light-dark" 
-							class="my-2"
-							@click="toggleTheme"
-							>
-					</v-icon>
-				</template>
-			</v-list-item>
-		</v-list>
-
-		<v-divider></v-divider>
-
-		<v-list
-				:lines="false"
-				density="comfortable"
-				nav
-				>
-			<v-list-item
-					v-for="(item, index) in navigationBarItems"
-					:key="index"
-					:value="item"
-					:to="item.route"
+			<v-list
 					class="my-1"
 					>
-				<template v-slot:prepend>
-					<v-icon :icon="item.icon"></v-icon>
-				</template>
+				<v-list-item
+						:prepend-avatar="avatar"
+						subtitle="mariorossi@email.com"
+						title="Mario Rossi"
+						>
+					<template v-slot:append>
+						<v-icon 
+								icon="mdi-theme-light-dark" 
+								class="my-2"
+								@click="toggleTheme"
+								>
+						</v-icon>
+					</template>
+				</v-list-item>
+			</v-list>
 
-				<v-list-item-title v-text="item.text"></v-list-item-title>
-			</v-list-item>
-        </v-list>
-	</v-navigation-drawer>
+			<v-divider></v-divider>
+
+			<v-list
+					:lines="false"
+					density="comfortable"
+					nav
+					>
+				<v-list-item
+						v-for="(item, index) in navigationBarItems"
+						:key="index"
+						:value="item"
+						:to="item.route"
+						class="my-1"
+						>
+					<template v-slot:prepend>
+						<v-icon :icon="item.icon"></v-icon>
+					</template>
+
+					<v-list-item-title v-text="item.text"></v-list-item-title>
+				</v-list-item>
+			</v-list>
+		</v-navigation-drawer>
+	</div>
 </template>
 
 <script>
