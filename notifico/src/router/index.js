@@ -1,14 +1,20 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UserDashboard from '../components/UserDashboard.vue'
+import UserDashboard from '../screens/UserDashboard.vue'
+import SignupLoginScreen from '../screens/SignupLoginScreen.vue'
 
 const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: UserDashboard
+      name: 'SignupLogin',
+      component: SignupLoginScreen,
     },
+    {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: UserDashboard,
+    }
   ]
 })
 

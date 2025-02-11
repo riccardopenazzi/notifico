@@ -17,9 +17,9 @@
 </template>
 
 <script>
-import CalendarComponent from './CalendarComponent.vue';
-import NextEventsPanel from './NextEventsPanel.vue';
-import AddEventPanel from './AddEventPanel.vue';
+import CalendarComponent from '../components/CalendarComponent.vue';
+import NextEventsPanel from '../components/NextEventsPanel.vue';
+import AddEventPanel from '../components/AddEventPanel.vue';
 
 export default {
 	data() {
