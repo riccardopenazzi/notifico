@@ -34,6 +34,7 @@
 <script>
 import { mapStores, mapWritableState } from 'pinia';
 import { useLoginStore } from '../stores/login-store';
+import ApiService from '@/utils/apiService';
 
 export default {
     data() {
@@ -52,8 +53,13 @@ export default {
     },
     methods: {
         execLogin() {
-            console.log('execLogin');
-            this.$router.push('/dashboard');
+            /* console.log('execLogin');
+            this.$router.push('/dashboard'); */
+            ApiService.get('/users')
+                    .then(vars => {
+                        console.log(vars);
+                    })
+                    ;
         },
     },
     mounted() {
