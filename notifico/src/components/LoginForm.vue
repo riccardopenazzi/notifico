@@ -34,7 +34,6 @@
 <script>
 import { mapStores, mapWritableState } from 'pinia';
 import { useLoginStore } from '../stores/login-store';
-import ApiService from '@/utils/apiService';
 
 export default {
     data() {
@@ -53,11 +52,18 @@ export default {
     },
     methods: {
         execLogin() {
-            /* console.log('execLogin');
-            this.$router.push('/dashboard'); */
-            ApiService.get('/users')
+            var loginStore = useLoginStore();
+            let vars = {
+                content: this.form.data,
+            };
+            loginStore.executeLogin(vars)
                     .then(vars => {
-                        console.log(vars);
+                        if (vars.success) {
+                            this.$router.push({name: 'Dashboard'});
+                        } else {
+                            console.log('Login failed');
+                            console.log(vars);
+                        }
                     })
                     ;
         },

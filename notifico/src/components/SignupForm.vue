@@ -118,9 +118,20 @@ export default {
     },
     methods: {
         execSignup() {
-            console.log('Eseguo signup');
-            console.log(this.form.data);
-            this.$router.push('/dashboard');
+            let signupStore = useSignupStore();
+            let vars = {
+                content: this.form.data,
+            };
+            signupStore.executeSignup(vars)
+                    .then(vars => {
+                        if (vars.success) {
+                            this.$router.push({ name: 'Dashboard' });
+                        } else {
+                            console.error('Signup error');
+                            console.error(vars);
+                        }
+                    })
+                    ;
         },
     },
     mounted() {
