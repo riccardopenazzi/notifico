@@ -16,7 +16,7 @@ class ApiService {
             return {
                 success: false,
                 message: error.response?.data?.error || 'Errore imprevisto',
-                serverMessage: error?.serverMessage,
+                serverMessage: error.response?.data?.serverMessage,
             }
             // throw error;
         }
@@ -35,7 +35,7 @@ class ApiService {
             return {
                 success: false,
                 message: error.response?.data?.error || 'Errore imprevisto',
-                serverMessage: error?.serverMessage,
+                serverMessage: error.response?.data?.serverMessage,
             }
             // throw error;
         }
@@ -54,7 +54,7 @@ class ApiService {
             return {
                 success: false,
                 message: error.response?.data?.error || 'Errore imprevisto',
-                serverMessage: error?.serverMessage,
+                serverMessage: error.response?.data?.serverMessage,
             }
             // throw error;
         }
@@ -73,7 +73,7 @@ class ApiService {
             return {
                 success: false,
                 message: error.response?.data?.error || 'Errore imprevisto',
-                serverMessage: error?.serverMessage,
+                serverMessage: error.response?.data?.serverMessage,
             }
             // throw error;
         }

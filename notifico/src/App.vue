@@ -1,5 +1,6 @@
 <template>
 	<v-app>
+		<CustomAlert></CustomAlert>
 		<AppBar v-show="isTopBarVisible"></AppBar>
 		<NavigationBar v-show="isNavigationBarVisible"></NavigationBar>
 		<v-main>
@@ -15,6 +16,7 @@ import { useUiStore } from './stores/ui-store';
 
 import NavigationBar from './components/NavigationBar.vue';
 import AppBar from './components/AppBar.vue';
+import CustomAlert from './components/CustomAlert.vue';
 
 export default {
 	name: 'App',
@@ -22,6 +24,7 @@ export default {
 	components: {
 		NavigationBar,
 		AppBar,
+		CustomAlert,
 	},
 	
 	data: () => ({

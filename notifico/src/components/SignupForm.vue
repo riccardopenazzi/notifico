@@ -78,6 +78,8 @@
 <script>
 import { mapStores, mapWritableState } from 'pinia';
 import { useSignupStore } from '../stores/signup-store.js';
+import { useAlertStore } from '../stores/alert-store.js';
+
 import hackerImg from '../assets/hacker.png';
 import gamerImg from '../assets/gamer.png';
 import manImg from '../assets/man.png';
@@ -92,6 +94,7 @@ export default {
     computed: {
         ...mapStores(
             useSignupStore,
+            useAlertStore,
         ),
         ...mapWritableState(useSignupStore, [
             'form',
@@ -124,11 +127,21 @@ export default {
             };
             signupStore.executeSignup(vars)
                     .then(vars => {
+                        let alertStore = useAlertStore();
                         if (vars.success) {
+                            alertStore.showAlert({
+                                message: 'Registrazione avvenuta con successo',
+                                color: 'success',
+                            });
                             this.$router.push({ name: 'Dashboard' });
                         } else {
                             console.error('Signup error');
                             console.error(vars);
+                            alertStore.showAlert({
+                                title: 'Errore nella registrazione',
+                                message: vars.serverMessage,
+                                color: 'error',
+                            });
                         }
                     })
                     ;
