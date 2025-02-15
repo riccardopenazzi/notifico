@@ -34,6 +34,7 @@
 <script>
 import { mapStores, mapWritableState } from 'pinia';
 import { useLoginStore } from '../stores/login-store';
+import { useAlertStore } from '../stores/alert-store';
 
 export default {
     data() {
@@ -44,6 +45,7 @@ export default {
     computed: {
         ...mapStores(
             useLoginStore,
+            useAlertStore,
         ),
         ...mapWritableState(useLoginStore, [
                 'form',
@@ -63,6 +65,12 @@ export default {
                         } else {
                             console.log('Login failed');
                             console.log(vars);
+                            let alertStore = useAlertStore();
+                            alertStore.showAlert({
+                                title: 'Errore nel login',
+                                message: vars.serverMessage,
+                                color: 'error',
+                            });
                         }
                     })
                     ;
