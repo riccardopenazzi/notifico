@@ -14,11 +14,19 @@
                     </v-text-field>
                     <v-select
                             label="Categoria"
-                            :items="items"
+                            :items="formattedCategoriesList"
                             clearable
                             variant="outlined"
                             item-title="text"
+                            item-value="value"
                             >
+                        <template v-slot:append>
+                            <v-icon 
+                                    icon="mdi-plus-box-multiple-outline"
+                                    @click="showCreateCategoryDialog = true"
+                                    >
+                            </v-icon>
+                        </template>
                         <template v-slot:item="{item, props}">
                             <v-list-item v-bind="props">
                                 <template v-slot:prepend>
@@ -28,7 +36,6 @@
                                             >
                                     </v-icon>
                                 </template>
-                                <v-list-item-title>{{ item.text }}</v-list-item-title>
                             </v-list-item>
                         </template>
                     </v-select>
@@ -59,25 +66,33 @@
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-expansion-panels>
+    <create-category-dialog></create-category-dialog>
 </template>
 
 <script>
 import { formatDate } from '@/utils/dateUtils';
+
+import { mapStores, mapWritableState } from 'pinia';
+
+import { useUserCategoryStore } from '../stores/user-category-store';
+
+import CreateCategoryDialog from './CreateCategoryDialog.vue';
 
 export default {
     data() {
         return {
             dateModel: null,
             isDatePickerExpanded: false,
-            items: [
-                {text: 'Bolli', color: 'red'},
-                {text: 'Assicurazioni', color: 'green'},
-                {text: 'Università', color: 'purple'}
-            ]
-        //    items: ['Bolli', 'Università']
         }
     },
     computed: {
+        ...mapStores(
+            useUserCategoryStore,
+        ),
+        ...mapWritableState(useUserCategoryStore,[
+            'showCreateCategoryDialog',
+            'userCategoriesList',
+        ]),
         formattedDate() {
             return date => {
                 return formatDate(date);
@@ -86,6 +101,18 @@ export default {
         showedDate() {
             return this.dateModel != null ? this.formattedDate(this.dateModel) : this.dateModel;
         },
+        formattedCategoriesList() {
+            return this.userCategoriesList.map(x => ({
+                text: x.name,
+                color: x.color,
+                value: x.value,
+            }));
+        }
+    },
+    methods: {
+    },
+    components: {
+        CreateCategoryDialog,
     },
 }
 </script>
