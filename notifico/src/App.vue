@@ -13,6 +13,7 @@
 import { mapStores, mapWritableState } from 'pinia';
 
 import { useUiStore } from './stores/ui-store';
+import { useUserInfoStore } from './stores/user-info';
 
 import NavigationBar from './components/NavigationBar.vue';
 import AppBar from './components/AppBar.vue';
@@ -34,6 +35,7 @@ export default {
 	computed: {
 		...mapStores(
 			useUiStore,
+			useUserInfoStore,
 		),
 		...mapWritableState(useUiStore, [
 			'showNavigationBar',
@@ -45,6 +47,18 @@ export default {
 		isNavigationBarVisible() {
 			return this.showNavigationBar;
 		},
+	},
+
+	mounted() {
+		useUserInfoStore().checkUserSession()
+				.then(vars => {
+					if (vars?.success) {
+						this.$router.push({ name: 'Dashboard' });
+					} else {
+						this.$router.push({ name: 'SignupLogin' });
+					}
+				})
+				;
 	},
 }
 </script>

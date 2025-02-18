@@ -76,14 +76,10 @@
 </template>
 
 <script>
-import { mapStores, mapWritableState } from 'pinia';
+import { mapStores, mapWritableState, mapState } from 'pinia';
 import { useSignupStore } from '../stores/signup-store.js';
 import { useAlertStore } from '../stores/alert-store.js';
-
-import hackerImg from '../assets/hacker.png';
-import gamerImg from '../assets/gamer.png';
-import manImg from '../assets/man.png';
-import womanImg from '../assets/woman.png';
+import { useAssetsStore } from '@/stores/assets-store.js';
 
 export default {
     data() {
@@ -95,29 +91,14 @@ export default {
         ...mapStores(
             useSignupStore,
             useAlertStore,
+            useAssetsStore,
         ),
         ...mapWritableState(useSignupStore, [
             'form',
         ]),
-        avatarsList() {
-            return [{
-                label: 'hacker',
-                value: 'hacker',
-                src: hackerImg,
-            },{
-                label: 'gamer',
-                value: 'gamer',
-                src: gamerImg,
-            },{
-                label: 'man',
-                value: 'man',
-                src: manImg,
-            },{
-                label: 'woman',
-                value: 'woman',
-                src: womanImg,
-            }]
-        }
+        ...mapState(useAssetsStore, [
+            'avatarsList',
+        ]),
     },
     methods: {
         execSignup() {

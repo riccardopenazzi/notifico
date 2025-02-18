@@ -1,7 +1,7 @@
 <template>
 	<v-container fluid>
 		<v-row>
-			<h1 class="ml-3 mt-2">Dashboard di Riccardo</h1>
+			<h1 class="ml-3 mt-2">{{`Dashboard di ${userInfo.data.name}`}}</h1>
 		</v-row>
 		<v-row>
 			<v-col cols="6">
@@ -17,6 +17,10 @@
 </template>
 
 <script>
+import { mapState, mapStores } from 'pinia';
+
+import { useUserInfoStore } from '../stores/user-info';
+
 import CalendarComponent from '../components/CalendarComponent.vue';
 import NextEventsPanel from '../components/NextEventsPanel.vue';
 import AddEventPanel from '../components/AddEventPanel.vue';
@@ -26,6 +30,15 @@ export default {
 		return {
 
 		}
+	},
+	computed: {
+		...mapStores(
+			useUserInfoStore,
+		),
+		...mapState(useUserInfoStore, [
+				'userInfo',
+			],
+		),
 	},
 	mounted() {
 	},
