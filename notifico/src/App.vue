@@ -1,10 +1,13 @@
 <template>
 	<v-app>
 		<CustomAlert></CustomAlert>
-		<AppBar v-show="isTopBarVisible"></AppBar>
-		<NavigationBar v-show="isNavigationBarVisible"></NavigationBar>
+		<AppBar v-show="!isLoading && isTopBarVisible"></AppBar>
+		<NavigationBar v-show="!isLoading && isNavigationBarVisible"></NavigationBar>
 		<v-main>
-			<router-view></router-view>
+			<v-container v-if="isLoading" class="d-flex justify-center align-center" style="height: 100vh;">
+				<v-progress-circular indeterminate color="primary"></v-progress-circular>
+			</v-container>
+			<router-view v-if="!isLoading"></router-view>
 		</v-main>
 	</v-app>
 </template>
@@ -29,7 +32,7 @@ export default {
 	},
 	
 	data: () => ({
-		//
+		isLoading: true,
 	}),
 
 	computed: {
@@ -57,6 +60,9 @@ export default {
 					} else {
 						this.$router.push({ name: 'SignupLogin' });
 					}
+				})
+				.finally(() => {
+					this.isLoading = false;
 				})
 				;
 	},
