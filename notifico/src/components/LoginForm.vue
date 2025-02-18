@@ -51,9 +51,35 @@ export default {
                 'form',
             ],
         ),
+        emailRules() {
+            return [
+                v => !!v || 'L\'email è obbligatoria',
+                v => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v) || 'Inserisci un\'email valida',
+            ];
+        },
+        passwordRules() {
+            return [
+                v => !!v || 'La password è obbligatoria',
+            ];
+        },
+        isFormValid() {
+            return true 
+                    && this.form.data.email 
+                    && this.form.data.password
+                    ;
+        },
     },
     methods: {
         execLogin() {
+            if (!this.isFormValid) {
+                let alertStore = useAlertStore();
+                alertStore.showAlert({
+                    title: 'Dati non validi',
+                    message: 'Inserisci tutti i dati richiesti',
+                    color: 'error',
+                });
+                return;
+            }
             var loginStore = useLoginStore();
             let vars = {
                 content: this.form.data,
