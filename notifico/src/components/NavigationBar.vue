@@ -4,14 +4,15 @@
 				expand-on-hover
 				rail
 				mobile-breakpoint="md"
+				class="navigation-drawer"
 				>
 			<v-list
 					class="my-1"
 					>
 				<v-list-item
-						:prepend-avatar="avatar"
-						subtitle="mariorossi@email.com"
-						title="Mario Rossi"
+						:prepend-avatar="avatarsList.find(x => x.value == userInfo.data.avatar)?.src"
+						:subtitle="userInfo.data.email"
+						:title="`${userInfo.data.name} ${userInfo.data.surname}`"
 						>
 					<template v-slot:append>
 						<v-icon 
@@ -45,14 +46,30 @@
 					<v-list-item-title v-text="item.text"></v-list-item-title>
 				</v-list-item>
 			</v-list>
+
+			<template v-slot:append>
+				<v-list-item
+						class="mb-3"
+						@click="executeLogout"
+						>
+					<template v-slot:prepend>
+						<v-icon icon="mdi-logout"></v-icon>
+					</template>
+					<v-list-item-title>Logout</v-list-item-title>
+				</v-list-item>
+			</template>
+
 		</v-navigation-drawer>
 	</div>
 </template>
 
 <script>
-import hackerImg from '../assets/hacker.png';
+import { mapState, mapStores } from 'pinia';
 
 import { useTheme } from 'vuetify/lib/framework.mjs';
+
+import { useUserInfoStore } from '../stores/user-info';
+import { useAssetsStore } from '../stores/assets-store';
 
 export default {
 	setup() {
@@ -64,10 +81,21 @@ export default {
 	},
 	data() {
 		return {
-			avatar: hackerImg,
 		}
 	},
 	computed: {
+		...mapStores(
+			useUserInfoStore,
+			useAssetsStore,
+		),
+		...mapState(useUserInfoStore, [
+				'userInfo',
+			],
+		),
+		...mapState(useAssetsStore, [
+				'avatarsList',
+			],
+		),
 		navigationBarItems() {
 			return [{
 				icon: 'mdi-monitor-dashboard',
@@ -81,7 +109,22 @@ export default {
 		},
 	},
 	methods: {
-		
+		executeLogout() {
+			useUserInfoStore().executeUserLogout()
+					.then(vars => {
+						console.log('Logout eseguito', vars);
+						this.$router.push({ name: 'SignupLogin' });
+					})
+					;
+		}
 	}
 }
 </script>
+
+<style lang="css">
+.navigation-drawer {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+}
+</style>

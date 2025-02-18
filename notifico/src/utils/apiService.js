@@ -1,11 +1,16 @@
 import axios from 'axios';
+import { wrapper } from 'axios-cookiejar-support';
+import { CookieJar } from 'tough-cookie';
+
+const cookieJar = new CookieJar();
+const client = wrapper(axios.create({ jar: cookieJar, withCredentials: true }));
 
 const BASE_URL = 'http://localhost:3000/api';
 
 class ApiService {
     static async get(endpoint, params = {}) {
         try {
-            const response = await axios.get(`${BASE_URL}${endpoint}`, { params });
+            const response = await client.get(`${BASE_URL}${endpoint}`, { params, withCredentials: true });
             return {
                 success: true, //ridondante perchè già presente in response.data ma per ora lo tengo
                 result: response.data,
@@ -24,7 +29,7 @@ class ApiService {
 
     static async post(endpoint, data) {
         try {
-            const response = await axios.post(`${BASE_URL}${endpoint}`, data);
+            const response = await client.post(`${BASE_URL}${endpoint}`, data);
             return {
                 success: true, //ridondante perchè già presente in response.data ma per ora lo tengo
                 result: response.data,
@@ -43,7 +48,7 @@ class ApiService {
 
     static async put(endpoint, data) {
         try {
-            const response = await axios.put(`${BASE_URL}${endpoint}`, data);
+            const response = await client.put(`${BASE_URL}${endpoint}`, data);
             return {
                 success: true, //ridondante perchè già presente in response.data ma per ora lo tengo
                 result: response.data,
@@ -62,7 +67,7 @@ class ApiService {
 
     static async delete(endpoint) {
         try {
-            const response = await axios.delete(`${BASE_URL}${endpoint}`);
+            const response = await client.delete(`${BASE_URL}${endpoint}`);
             return {
                 success: true, //ridondante perchè già presente in response.data ma per ora lo tengo
                 result: response.data,
