@@ -8,6 +8,7 @@
                     label="Nome"
                     required
                     variant="outlined"
+                    :rules="nameRules"
                     >
             </v-text-field>
             <v-text-field
@@ -15,6 +16,7 @@
                     label="Cognome"
                     required
                     variant="outlined"
+                    :rules="surnameRules"
                     >
             </v-text-field>
             <v-text-field
@@ -23,6 +25,7 @@
                     required
                     type="email"
                     variant="outlined"
+                    :rules="emailRules"
                     >
             </v-text-field>
             <v-text-field
@@ -31,6 +34,7 @@
                     required
                     type="password"
                     variant="outlined"
+                    :rules="passwordRules"
                     >
             </v-text-field>
             <v-text-field
@@ -39,12 +43,14 @@
                     required
                     type="password"
                     variant="outlined"
+                    :rules="checkPasswordRules"
                     >
             </v-text-field>
             <v-radio-group
                     label="Avatar"
                     v-model="form.data.avatar"
                     class="d-flex justify-center"
+                    :rules="avatarRules"
                     >
                 <v-row class="d-flex justify-center mt-2">
                     <v-radio
@@ -99,9 +105,59 @@ export default {
         ...mapState(useAssetsStore, [
             'avatarsList',
         ]),
+        nameRules() {
+            return [
+                v => !!v || 'Il nome è obbligatorio',
+            ];
+        },
+        surnameRules() {
+            return [
+                v => !!v || 'Il cognome è obbligatorio',
+            ];
+        },
+        emailRules() {
+            return [
+                v => !!v || 'L\'email è obbligatoria',
+                v => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v) || 'Inserisci un\'email valida',
+            ];
+        },
+        passwordRules() {
+            return [
+                v => !!v || 'La password è obbligatoria',
+                v => /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(v) || 'La password deve avere almeno 8 caratteri, una maiuscola, una minuscola, un numero e un carattere speciale',
+            ];
+        },
+        checkPasswordRules() {
+            return [
+                v => v === this.form.data.password || 'Le password non corrispondono',
+            ];
+        },
+        avatarRules() {
+            return [
+                v => !!v || 'Seleziona un avatar',
+            ];
+        },
+        isFormValid() {
+            return true 
+                    && this.form.data.name 
+                    && this.form.data.surname 
+                    && this.form.data.email 
+                    && this.form.data.password 
+                    && this.form.data.confirmPassword 
+                    && this.form.data.avatar
+                    && this.form.data.password === this.form.data.confirmPassword;
+        },
     },
     methods: {
         execSignup() {
+            if (!this.isFormValid) {
+                this.alertStoreStore.showAlert({
+                    title: 'Dati non validi',
+                    message: 'Inserisci tutti i dati richiesti',
+                    color: 'error',
+                });
+                return;
+            }
             let signupStore = useSignupStore();
             let vars = {
                 content: this.form.data,
