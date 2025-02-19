@@ -17,28 +17,37 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import itLocale from '@fullcalendar/core/locales/it'
 
+import { mapState, mapStores } from 'pinia';
+
+import { useUserDeadlineStore } from '@/stores/user-deadline-store';
+import { useUserInfoStore } from '@/stores/user-info';
+
 export default {
     data() {
         return {
-            calendarOptions: {
+        }
+    },
+    computed: {
+        ...mapStores(useUserDeadlineStore, useUserInfoStore),
+        ...mapState(useUserDeadlineStore, [
+            'userDeadlinesList',
+        ]),
+        formattedUserDeadlines() {
+            return this.userDeadlinesList.map(x => ({
+                title: x.title,
+                date: x.date,
+            }))
+            ;
+        },
+        calendarOptions() {
+            return {
                 plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
                 initialView: 'dayGridMonth',
                 locale: itLocale,
                 displayEventTime: false,
-                events:[{
-                    title: 'Bollo auto Opel',
-                    date: new Date(2025, 1, 5),
-                },
-                {
-                    title: 'Tasse università',
-                    date: new Date(2025, 1, 15),
-                },
-                {
-                    title: 'Assicurazione moto',
-                    date: new Date(2025, 1, 25),
-                }],
-            }
-        }
+                events: this.formattedUserDeadlines,
+            };
+        },
     },
     components: {
         FullCalendar,
