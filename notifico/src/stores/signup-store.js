@@ -37,6 +37,7 @@ export const useSignupStore = defineStore('signupStore', {
                                 surname: this.form.data.surname,
                                 email: this.form.data.email,
                                 avatar: this.form.data.avatar,
+                                id: vars.result.userId,
                             };
                             useUserInfoStore().initUserInfo({ content: userData });
                             this.resetForm();

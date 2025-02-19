@@ -2,6 +2,12 @@ import { defineStore } from 'pinia';
 
 import ApiService from '../utils/apiService';
 
+import { useLoginStore } from './login-store';
+import { useSignupStore } from './signup-store';
+import { useUiStore } from './ui-store';
+import { useUserCategoryStore } from './user-category-store';
+import { useUserDeadlineStore } from './user-deadline-store';
+
 export const useUserInfoStore = defineStore('userInfoStore', {
     state() {
         return {
@@ -34,12 +40,17 @@ export const useUserInfoStore = defineStore('userInfoStore', {
             ;
         },
         executeUserLogout() {
-            //si potrebbe rimpiazzare con this.$reset() ma se poi aggiungo altro allo state potrebbe essere un problema, per il momento ok così
             return ApiService.post('/execute-logout')
                     .then(vars => {
                         console.log('executeUserLogout', vars);
                         if (vars?.success) {
-                            this.resetUserInfo();
+
+                            useLoginStore().$reset();
+                            useSignupStore().$reset();
+                            useUiStore().$reset();
+                            useUserCategoryStore().$reset();
+                            useUserDeadlineStore().$reset();
+                            this.$reset();
                         }
                         return Promise.resolve(vars);
                     })
@@ -56,6 +67,7 @@ export const useUserInfoStore = defineStore('userInfoStore', {
                     ;
         },
         resetUserInfo() {
+            //si potrebbe rimpiazzare con this.$reset() ma se poi aggiungo altro allo state potrebbe essere un problema, per il momento ok così
             Object.keys(this.userInfo.data).forEach(x => {
                 this.userInfo.data[x] = '';
             });
