@@ -9,8 +9,8 @@
 			</v-col>
 			<v-col cols="1"></v-col>
 			<v-col cols="4">
-				<AddEventPanel></AddEventPanel>
-				<NextEventsPanel class="mt-5"></NextEventsPanel>
+				<AddDeadlinePanel></AddDeadlinePanel>
+				<NextDeadlinesPanel class="mt-5"></NextDeadlinesPanel>
 			</v-col>
 		</v-row>
 	</v-container>
@@ -22,8 +22,8 @@ import { mapState, mapStores } from 'pinia';
 import { useUserInfoStore } from '../stores/user-info';
 
 import CalendarComponent from '../components/CalendarComponent.vue';
-import NextEventsPanel from '../components/NextEventsPanel.vue';
-import AddEventPanel from '../components/AddEventPanel.vue';
+import NextDeadlinesPanel from '../components/NextDeadlinesPanel.vue';
+import AddDeadlinePanel from '../components/AddDeadlinePanel.vue';
 
 export default {
 	data() {
@@ -44,8 +44,8 @@ export default {
 	},
 	components: {
 		CalendarComponent,
-		NextEventsPanel,
-		AddEventPanel,
+		NextDeadlinesPanel,
+		AddDeadlinePanel,
 	}
 }
 </script>

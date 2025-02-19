@@ -10,6 +10,7 @@
                     required
                     type="email"
                     variant="outlined"
+                    :rules="emailRules"
                     >
             </v-text-field>
             <v-text-field
@@ -18,6 +19,7 @@
                     required
                     type="password"
                     variant="outlined"
+                    :rules="passwordRules"
                     >
             </v-text-field>
             <v-btn

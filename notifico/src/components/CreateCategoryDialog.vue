@@ -14,6 +14,7 @@
                             v-model="form.data.name"
                             variant="outlined"
                             clearable
+                            :rules="nameRules"
                             >
                     </v-text-field>
                     <v-label class="mb-2">Colore categoria</v-label>
@@ -81,15 +82,34 @@ export default {
             'form',
             'showCreateCategoryDialog',
         ]),
+        nameRules() {
+            return [
+                v => !!v || 'Il nome è obbligatorio',
+            ];
+        },
+        isFormValid() {
+            return true
+                    && this.form.data.name
+                    && this.form.data.color
+                    ;
+        }
     },
     methods: {
         createCategory() {
+            let alertStore = useAlertStore();
+            if (!this.isFormValid) {
+                alertStore.showAlert({
+                    title: 'Dati mancanti',
+                    message: 'Completa tutti i campi per procedere',
+                    color: 'error',
+                });
+                return;
+            }
             let vars = {};
             vars.userId = useUserInfoStore().userInfo.data.id;
             vars.content = { ...this.form.data };
             this.userCategoryStoreStore.createUserCategory(vars)
                     .then(vars => {
-                        let alertStore = useAlertStore();
                         if (vars.success) {
                             alertStore.showAlert({
                                 title: 'Categoria creata con successo',
@@ -111,7 +131,6 @@ export default {
         },
     },
     mounted() {
-        this.userCategoryStoreStore.loadUserCategories({ userId: useUserInfoStore().userInfo.data.id });
     },
     components: {
     },

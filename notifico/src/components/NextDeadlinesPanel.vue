@@ -8,9 +8,9 @@
             <v-expansion-panel-text>
                 <v-list>
                     <v-list-item
-                            v-for="(event, index) in nextEventsList"
+                            v-for="(deadline, index) in formattedUserDeadlinesList"
                             :key="index"
-                            :title="formattedDate(event.date) + ' - ' + event.title"
+                            :title="formattedDate(deadline.date) + ' - ' + deadline.title"
                             >
                         <template v-slot:prepend>
                             <v-icon icon="mdi-calendar" color="yellow"></v-icon>
@@ -29,6 +29,11 @@
 <script>
 import { formatDate } from '@/utils/dateUtils';
 
+import { mapState, mapStores } from 'pinia';
+
+import { useUserDeadlineStore } from '@/stores/user-deadline-store';
+import { useUserInfoStore } from '@/stores/user-info';
+
 export default {
     data() {
         return {
@@ -36,29 +41,28 @@ export default {
         }
     },
     computed: {
-        nextEventsList() {
-            return [{
-                    title: 'Bollo auto Opel',
-                    date: new Date(2025, 1, 5),
-                },
-                {
-                    title: 'Tasse università',
-                    date: new Date(2025, 1, 15),
-                },
-                {
-                    title: 'Assicurazione moto',
-                    date: new Date(2025, 1, 25),
-                }];
-        },
+        ...mapStores(useUserDeadlineStore, useUserInfoStore),
+        ...mapState(useUserDeadlineStore, [
+            'userDeadlinesList',
+        ]),
         formattedDate() {
             return date => {
                 return formatDate(date);
             }
+        },
+        formattedUserDeadlinesList() {
+            return [ ...this.userDeadlinesList ] //necessaria copia altrimenti modifico lista originale
+                    .sort((a, b) => a.date < b.date ? -1 : 1) //ordino in ordine crescente di data
+                    .slice(0, 3)
+                    ;
         }
     },
     methods: {
     },
     mounted() {
+        if (!this.userDeadlinesList.length) {
+            this.userDeadlineStoreStore.loadUserDeadlines({userId: this.userInfoStoreStore.userInfo.data.id})
+        }
     },
 }
 </script>

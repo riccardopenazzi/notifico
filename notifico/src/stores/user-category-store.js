@@ -40,7 +40,7 @@ export const useUserCategoryStore = defineStore('userCategoryStore', {
                 console.error('UserId and content are required', vars);
                 return;
             }
-            return ApiService.post('/create-user-categories', {userId: userId, color: vars.content.color, name: vars.content.name })
+            return ApiService.post('/create-user-category', {userId: userId, color: vars.content.color, name: vars.content.name })
                     .then(vars => {
                         if (vars.success) {
                             vars.userId = userId;
