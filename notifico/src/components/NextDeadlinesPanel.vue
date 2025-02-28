@@ -6,7 +6,7 @@
                 title="Prossime 3 scadenze"
                 >
             <v-expansion-panel-text>
-                <v-list>
+                <v-list v-if="formattedUserDeadlinesList.length > 0">
                     <v-list-item
                             v-for="(deadline, index) in formattedUserDeadlinesList"
                             :key="index"
@@ -21,6 +21,9 @@
                         </template>
                     </v-list-item>
                 </v-list>
+                <div v-else>
+                    Nessuna scadenza da segnalare
+                </div>
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-expansion-panels>
@@ -52,6 +55,7 @@ export default {
         },
         formattedUserDeadlinesList() {
             return [ ...this.userDeadlinesList ] //necessaria copia altrimenti modifico lista originale
+                    .filter(x => new Date(x.date) >= new Date())
                     .sort((a, b) => a.date < b.date ? -1 : 1) //ordino in ordine crescente di data
                     .slice(0, 3)
                     ;
