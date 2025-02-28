@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "dev": "webpack --mode development --watch"
   },
   "dependencies": {
     "@date-io/date-fns": "^3.2.0",
@@ -39,6 +40,7 @@
     "sass-loader": "^16.0.4",
     "style-loader": "^4.0.0",
     "vue-cli-plugin-vuetify": "~2.5.8",
+    "webpack-cli": "^6.0.1",
     "webpack-plugin-vuetify": "^2.0.0-alpha.0"
   },
   "eslintConfig": {
