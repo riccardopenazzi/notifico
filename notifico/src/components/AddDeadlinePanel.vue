@@ -52,24 +52,54 @@
                             </v-list-item>
                         </template>
                     </v-select>
-                    <v-text-field
+                    <v-date-input 
                             label="Data scadenza"
-                            v-model="showedDate"
-                            variant="outlined"
-                            readonly
-                            @click="isDatePickerExpanded = !isDatePickerExpanded"
-                            :rules="dateRules"
-                            >
-                    </v-text-field>
-                    <v-date-picker
-                            v-show="isDatePickerExpanded"
-                            elevation="20"
                             v-model="form.data.date"
-                            ref="datePicker"
-                            @update:modelValue="isDatePickerExpanded = false"
-                            @blur="isDatePickerExpanded = false"
-                            >
-                    </v-date-picker>
+                            :min="minDate"
+                            clearable
+                            prepend-icon=""
+                            :rules="dateRules"
+                            @update:modelValue="onDateUpdateModel"
+                            @click:clear="resetDateVModel"
+                            ></v-date-input>
+                    <v-container v-if="form.data.date">
+                        <v-row class="mb-4">
+                            <span>Personalizza avvisi</span>
+                        </v-row>
+                        <v-row class="d-flex align-center">
+                            <v-date-input 
+                                    label="Data avviso"
+                                    v-model="dateEmailToAdd"
+                                    :min="minDate"
+                                    :max="form.data.date"
+                                    ></v-date-input>
+                            <v-icon 
+                                    icon="mdi-plus-circle" 
+                                    class="ml-5" 
+                                    color="green" 
+                                    size="30px"
+                                    @click="addDateToEmailsToSendList"
+                                    ></v-icon>
+                        </v-row>
+                        <v-row>
+                            <v-list>
+                                <v-list-item-group>
+                                    <v-list-item v-for="(elem, index) in ordereddEmailsToSend" :key="index"
+                                            class="rounded-lg my-2 bg-surface-variant elevation-5"
+                                            >
+                                        <v-list-item-title>{{ formattedDate(elem.date) }}</v-list-item-title>
+                                        <template v-slot:append v-if="elem.date.getDate() != form.data?.date?.getDate()">
+                                            <v-icon
+                                                    icon="mdi-delete"
+                                                    color="red"
+                                                    @click="deleteDateFromEmailsToSendList(elem.date)"
+                                                    ></v-icon>
+                                        </template>
+                                    </v-list-item>
+                                </v-list-item-group>
+                            </v-list>
+                        </v-row>
+                    </v-container>
                     <v-btn
                             prepend-icon="mdi-check"
                             variant="elevated"
@@ -103,6 +133,8 @@ export default {
         return {
             isDatePickerExpanded: false,
             expandedPanels: [],
+            dateEmailToAdd: '',
+            minDate: new Date().toISOString().split('T')[0],
         }
     },
     computed: {
@@ -149,7 +181,12 @@ export default {
                     && this.form.data.title
                     && this.form.data.date
                     ;
-        }
+        },
+        ordereddEmailsToSend() {
+            return [ ...this.form.data.emailsToSend ]
+                    .sort((a, b) => a.date > b.date ? 1 : -1)
+                    ;
+        },
     },
     methods: {
         createDeadline() {
@@ -169,6 +206,7 @@ export default {
                 description: this.form.data.description || null,
                 categoryId: this.form.data.categoryId || null,
                 date: this.form.data.date,
+                emailsToSend: this.form.data.emailsToSend.map(x => x.date),
             };
             this.userDeadlineStoreStore.createDeadline(vars)
                     .then(vars => {
@@ -191,6 +229,28 @@ export default {
                         }
                     })
                     ;
+        },
+        //aggiungo una data solo se non è già presente nella lista ed è minore della scadenza
+        addDateToEmailsToSendList(userAction=true){
+            if (!this.form.data.emailsToSend.some(x => x.date.getDate() === this.dateEmailToAdd.getDate()) && this.dateEmailToAdd.getDate() <= this.form.data.date.getDate()) {
+                this.form.data.emailsToSend.push({date: this.dateEmailToAdd, userAction: userAction});
+                // this.dateEmailToAdd = this.form.data.date;
+                this.dateEmailToAdd = null;
+            }
+        },
+        deleteDateFromEmailsToSendList(dateToRemove){
+            this.form.data.emailsToSend = this.form.data.emailsToSend.filter(x => x.date.getDate() != dateToRemove.getDate());
+        },
+        //quando la scadenza viene aggiornata tengo solo le email programmate con data inferiore o uguale alla scadenza e inserite dall'utente, poi chiamo la addDate cercando di aggiungere
+        //la data della scadenza, in questo modo ho già i controlli sui duplicati passando false perchè questa data non è stata aggiunta dall'utente
+        onDateUpdateModel() {
+            this.isDatePickerExpanded = false;
+            this.form.data.emailsToSend = this.form.data.emailsToSend.filter(x => x.date.getDate() <= this.form.data.date.getDate() && x.userAction);
+            this.dateEmailToAdd = this.form.data.date;
+            this.addDateToEmailsToSendList(false);
+        },
+        resetDateVModel(){
+            this.form.data.date = null;
         },
     },
     mounted() {

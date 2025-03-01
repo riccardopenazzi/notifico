@@ -9,6 +9,7 @@ import { createVuetify } from 'vuetify'
 import { VCalendar } from 'vuetify/labs/VCalendar'
 
 import { it } from 'vuetify/locale'
+import { VDateInput } from 'vuetify/lib/labs/components.mjs'
 
 export default createVuetify({
   theme: {
@@ -16,6 +17,7 @@ export default createVuetify({
   },
   components: {
     VCalendar,
+    VDateInput,
   },
   locale: {
     locale: 'it',
