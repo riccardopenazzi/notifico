@@ -10,6 +10,7 @@ export const useUserDeadlineStore = defineStore('userDeadlineStore', {
                     description: '',
                     categoryId: '',
                     date: null, //necessario che sia null per come è mostrata la data
+                    emailsToSend: [],
                 },
             },
             userDeadlinesList: [],
@@ -25,6 +26,9 @@ export const useUserDeadlineStore = defineStore('userDeadlineStore', {
             })
             ;
             this.form.data.date = null;
+            this.form.data.emailsToSend = [{
+                date: new Date(),
+            }];
         },
         loadUserDeadlines(vars) {
             vars ||= {};
