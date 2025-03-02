@@ -16,7 +16,9 @@ export const useUserCategoryStore = defineStore('userCategoryStore', {
         };
     },
     getters: {
-        // Getter
+        categoriesMap() {
+            return this.userCategoriesList.toMap(x => x.id);
+        },
     },
     actions: {
         loadUserCategories(vars) {

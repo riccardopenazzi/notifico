@@ -1,8 +1,9 @@
 <template class="signup-form--wrapper">
     <v-card
-            class="pa-3 bg-primary"
+            class="pa-3 bg-primary signup-form--card"
             >
-        <v-form>
+        <v-form
+                @submit.prevent="execSignup">
             <v-text-field
                     v-model="form.data.name"
                     label="Nome"
@@ -73,7 +74,7 @@
             <v-btn
                     color="success"
                     prepend-icon="mdi-check"
-                    @click="execSignup"
+                    type="submit"
                     >
                 Registrati
             </v-btn>
@@ -145,7 +146,8 @@ export default {
                     && this.form.data.password 
                     && this.form.data.confirmPassword 
                     && this.form.data.avatar
-                    && this.form.data.password === this.form.data.confirmPassword;
+                    && this.form.data.password === this.form.data.confirmPassword
+                    ;
         },
     },
     methods: {
@@ -192,18 +194,15 @@ export default {
 </script>
 
 <style lang="scss">
-    .signup-form--wrapper {
-        
-    }
-    .v-selection-control__input {
-        display: none;
-    }
-    .avatar-radio {
-        cursor: pointer;
-    }
-     .selected-avatar {
-        border: 3px solid green;
-        border-radius: 50%;
-        padding: 1px;
-    }
+.signup-form--card .v-selection-control__input {
+    display: none;
+}
+.avatar-radio {
+    cursor: pointer;
+}
+.selected-avatar {
+    border: 3px solid green;
+    border-radius: 50%;
+    padding: 1px;
+}
 </style>
