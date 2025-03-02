@@ -1,11 +1,13 @@
 import axios from 'axios';
 import { wrapper } from 'axios-cookiejar-support';
 import { CookieJar } from 'tough-cookie';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const cookieJar = new CookieJar();
 const client = wrapper(axios.create({ jar: cookieJar, withCredentials: true }));
 
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = process.env.BACKEND_SERVER;
 
 class ApiService {
     static async get(endpoint, params = {}) {
