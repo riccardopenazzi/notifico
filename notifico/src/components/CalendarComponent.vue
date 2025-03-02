@@ -1,12 +1,19 @@
 <template>
     <v-card class="pa-6">
-        <!-- <v-calendar
-                :weekdays="[0, 1, 2, 3, 4, 5, 6]"
-                view-mode="month"
-                class="calendar-component"
-                >
-        </v-calendar> -->
-        <FullCalendar :options="calendarOptions"></FullCalendar>
+        <FullCalendar 
+                :options="calendarOptions"
+                ></FullCalendar>
+        <v-dialog v-model="showDialog" persistent>
+            <v-card :style="{ position: 'absolute', top: dialogY + 'px', left: dialogX + 'px' }">
+                <v-card-title>{{ eventTitle }}</v-card-title>
+                <v-card-text>
+                <p>Dettagli dell'evento...</p>
+                </v-card-text>
+                <v-card-actions>
+                <v-btn color="primary" @click="showDialog = false">Chiudi</v-btn>
+                </v-card-actions>
+            </v-card>
+            </v-dialog>
     </v-card>
 </template>
 
@@ -25,6 +32,10 @@ import { useUserInfoStore } from '@/stores/user-info';
 export default {
     data() {
         return {
+            showDialog: false,
+            dialogX: 0,
+            dialogY: 0,
+            eventTitle: "",
         }
     },
     computed: {
@@ -36,6 +47,7 @@ export default {
             return this.userDeadlinesList.map(x => ({
                 title: x.title,
                 date: x.date,
+                deadlined: x.id,
             }))
             ;
         },
@@ -46,7 +58,25 @@ export default {
                 locale: itLocale,
                 displayEventTime: false,
                 events: this.formattedUserDeadlines,
+                dateClick: this.onDateClick,
+                eventMouseEnter: this.onEventMouseEnter,
+                eventMouseLeave: this.onEventMouseLeave,
             };
+        },
+    },
+    methods: {
+        onEventMouseEnter(info) {
+            console.log('Hovered over info:', info);
+            this.showDialog = true;
+            this.eventTitle = "Evento su " + info.event._def.title;
+            this.dialogX = info.jsEvent.x + 10; // Leggermente spostato a destra
+            this.dialogY = info.jsEvent.y + 10; // Leggermente spostato in basso
+        },
+        onDateClick(day) {
+            console.log('Clicked on day:', day);
+        },
+        onEventMouseLeave() {
+            this.showDialog = false;
         },
     },
     components: {
