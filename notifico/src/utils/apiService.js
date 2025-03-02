@@ -5,7 +5,8 @@ import { CookieJar } from 'tough-cookie';
 const cookieJar = new CookieJar();
 const client = wrapper(axios.create({ jar: cookieJar, withCredentials: true }));
 
-const BASE_URL = 'http://localhost:3000/api';
+// const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = process.env.VUE_APP_BACKEND_SERVER;
 
 class ApiService {
     static async get(endpoint, params = {}) {
