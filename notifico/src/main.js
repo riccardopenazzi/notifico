@@ -4,6 +4,7 @@ import vuetify from './plugins/vuetify'
 import { loadFonts } from './plugins/webfontloader'
 import { createPinia } from 'pinia'
 import router from './router'
+import './utils/utils';
 
 loadFonts()
 

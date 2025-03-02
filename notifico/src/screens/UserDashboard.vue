@@ -9,7 +9,7 @@
 			</v-col>
 			<v-col cols="1"></v-col>
 			<v-col cols="4">
-				<AddDeadlinePanel></AddDeadlinePanel>
+				<AddDeadlineFormPanel></AddDeadlineFormPanel>
 				<NextDeadlinesPanel class="mt-5"></NextDeadlinesPanel>
 			</v-col>
 		</v-row>
@@ -23,7 +23,7 @@ import { useUserInfoStore } from '../stores/user-info';
 
 import CalendarComponent from '../components/CalendarComponent.vue';
 import NextDeadlinesPanel from '../components/NextDeadlinesPanel.vue';
-import AddDeadlinePanel from '../components/AddDeadlinePanel.vue';
+import AddDeadlineFormPanel from '../components/AddDeadlineFormPanel.vue';
 
 export default {
 	data() {
@@ -45,7 +45,7 @@ export default {
 	components: {
 		CalendarComponent,
 		NextDeadlinesPanel,
-		AddDeadlinePanel,
+		AddDeadlineFormPanel,
 	}
 }
 </script>

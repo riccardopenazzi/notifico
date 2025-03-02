@@ -100,12 +100,16 @@ export default {
 			return [{
 				icon: 'mdi-monitor-dashboard',
 				text: 'Dashboard',
-				route: '/',
+				route: '/dashboard',
 			},{
+				icon: 'mdi-table',
+				text: 'Gestione scadenze',
+				route: '/deadlines-management',
+			}/* ,{
 				icon: 'mdi-cog-outline',
 				text: 'Impostazioni',
 				route: '/settings',
-			}]
+			} */]
 		},
 	},
 	methods: {

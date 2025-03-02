@@ -3,7 +3,7 @@
             class="pa-3 bg-primary"
             >
         <v-form
-                @submit="execLogin">
+                @submit.prevent="execLogin">
             <v-text-field
                     v-model="form.data.email"
                     label="Email"
@@ -25,7 +25,7 @@
             <v-btn
                     color="success"
                     prepend-icon="mdi-check"
-                    @click="execLogin"
+                    type="submit"
                     >
                 Accedi
             </v-btn>
