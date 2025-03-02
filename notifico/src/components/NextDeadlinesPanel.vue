@@ -16,8 +16,16 @@
                             <v-icon icon="mdi-calendar" color="yellow"></v-icon>
                         </template>
                         <template v-slot:append>
-                            <v-icon icon="mdi-close" color="red" class="mr-2"></v-icon>
-                            <v-icon icon="mdi-pencil-outline" color="primary"></v-icon>
+                            <v-icon 
+                                    icon="mdi-delete" 
+                                    color="red" 
+                                    class="mr-2"
+                                    @click="onTrashClick(deadline)"></v-icon>
+                            <v-icon 
+                                    icon="mdi-pencil-outline" 
+                                    color="primary"
+                                    @click="onPencilClick(deadline)"
+                                    ></v-icon>
                         </template>
                     </v-list-item>
                 </v-list>
@@ -32,10 +40,11 @@
 <script>
 import { formatDate } from '@/utils/dateUtils';
 
-import { mapState, mapStores } from 'pinia';
+import { mapState, mapStores, mapWritableState } from 'pinia';
 
 import { useUserDeadlineStore } from '@/stores/user-deadline-store';
 import { useUserInfoStore } from '@/stores/user-info';
+import { useAlertStore } from '@/stores/alert-store';
 
 export default {
     data() {
@@ -48,6 +57,9 @@ export default {
         ...mapState(useUserDeadlineStore, [
             'userDeadlinesList',
         ]),
+        ...mapWritableState(useUserDeadlineStore, [
+            'addDeadlinePopupVisible',
+        ]),
         formattedDate() {
             return date => {
                 return formatDate(date);
@@ -59,9 +71,38 @@ export default {
                     .sort((a, b) => a.date < b.date ? -1 : 1) //ordino in ordine crescente di data
                     .slice(0, 3)
                     ;
-        }
+        },
     },
     methods: {
+        onPencilClick(item){
+            this.userDeadlineStoreStore.populateForm({deadlineId: item.id})
+                    .then(() => {
+                        this.addDeadlinePopupVisible = true;
+                    })
+                    ;
+        },
+        onTrashClick(item){
+            this.userDeadlineStoreStore.deleteDeadline({deadlineId: item.id})
+                    .then(vars => {
+                        const alertStore = useAlertStore();
+                        if (vars?.success) {
+                            alertStore.showAlert({
+                                title: `Scadenza eliminata con successo`,
+                                message: `La scadenza è stata eliminata correttamente`,
+                                color: 'success',
+                            });
+                        } else {
+                            console.error('Delete category error');
+                            console.error(vars);
+                            alertStore.showAlert({
+                                title: 'Errore nell\'eliminazione scadenza',
+                                message: vars.serverMessage,
+                                color: 'error',
+                            });
+                        }
+                    })
+                    ;
+        },
     },
     mounted() {
         if (!this.userDeadlinesList.length) {

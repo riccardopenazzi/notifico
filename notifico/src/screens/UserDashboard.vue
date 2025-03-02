@@ -14,6 +14,7 @@
 			</v-col>
 		</v-row>
 	</v-container>
+	<AddDeadlineFormPopup></AddDeadlineFormPopup>
 </template>
 
 <script>
@@ -24,6 +25,7 @@ import { useUserInfoStore } from '../stores/user-info';
 import CalendarComponent from '../components/CalendarComponent.vue';
 import NextDeadlinesPanel from '../components/NextDeadlinesPanel.vue';
 import AddDeadlineFormPanel from '../components/AddDeadlineFormPanel.vue';
+import AddDeadlineFormPopup from '@/components/AddDeadlineFormPopup.vue';
 
 export default {
 	data() {
@@ -46,6 +48,7 @@ export default {
 		CalendarComponent,
 		NextDeadlinesPanel,
 		AddDeadlineFormPanel,
+		AddDeadlineFormPopup,
 	}
 }
 </script>
