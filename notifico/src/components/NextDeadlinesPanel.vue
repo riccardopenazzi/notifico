@@ -35,6 +35,10 @@
             </v-expansion-panel-text>
         </v-expansion-panel>
     </v-expansion-panels>
+    <UserActionDialog
+            @confirm-click="deleteDeadline()"
+            @cancel-click="userActionDialogStore.closeDialog()"
+            ></UserActionDialog>
 </template>
 
 <script>
@@ -45,15 +49,19 @@ import { mapState, mapStores, mapWritableState } from 'pinia';
 import { useUserDeadlineStore } from '@/stores/user-deadline-store';
 import { useUserInfoStore } from '@/stores/user-info';
 import { useAlertStore } from '@/stores/alert-store';
+import { useUserActionDialogStore } from '@/stores/user-action-dialog-store';
+
+import UserActionDialog from './UserActionDialog.vue';
 
 export default {
     data() {
         return {
             panel: [0],
+            selectedDeadline: '',
         }
     },
     computed: {
-        ...mapStores(useUserDeadlineStore, useUserInfoStore),
+        ...mapStores(useUserDeadlineStore, useUserInfoStore, useUserActionDialogStore),
         ...mapState(useUserDeadlineStore, [
             'userDeadlinesList',
         ]),
@@ -81,8 +89,18 @@ export default {
                     })
                     ;
         },
-        onTrashClick(item){
-            this.userDeadlineStoreStore.deleteDeadline({deadlineId: item.id})
+        onTrashClick(item) {
+            const vars = {
+                title: `Eliminazione scadenza ${item.title}`,
+                message: `Confermi di voler eliminare la scadenza ${item.title} programmata per il giorno ${formatDate(item.date)}?`,
+                confirmText: 'Conferma',
+                cancelText: 'Annulla',
+            };
+            this.selectedDeadline = item;
+            useUserActionDialogStore().openDialog(vars);
+        },
+        deleteDeadline(){
+            this.userDeadlineStoreStore.deleteDeadline({deadlineId: this.selectedDeadline.id})
                     .then(vars => {
                         const alertStore = useAlertStore();
                         if (vars?.success) {
@@ -91,6 +109,7 @@ export default {
                                 message: `La scadenza è stata eliminata correttamente`,
                                 color: 'success',
                             });
+                            this.userActionDialogStore.closeDialog();
                         } else {
                             console.error('Delete category error');
                             console.error(vars);
@@ -108,6 +127,9 @@ export default {
         if (!this.userDeadlinesList.length) {
             this.userDeadlineStoreStore.loadUserDeadlines({userId: this.userInfoStoreStore.userInfo.data.id})
         }
+    },
+    components: {
+		UserActionDialog,
     },
 }
 </script>
