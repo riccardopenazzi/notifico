@@ -3,21 +3,22 @@
         <FullCalendar 
                 :options="calendarOptions"
                 ></FullCalendar>
-        <v-dialog v-model="showDialog" persistent>
-            <v-card :style="{ position: 'absolute', top: dialogY + 'px', left: dialogX + 'px' }">
-                <v-card-title>{{ eventTitle }}</v-card-title>
-                <v-card-text>
-                <p>Dettagli dell'evento...</p>
+        <v-menu v-model="showDialog" absolute offset-y :activator="menuActivator">
+            <v-card width="300px">
+                <v-card-title>{{ hoverEvent.title }}</v-card-title>
+                <v-card-text v-if="hoverEvent.extendedProps.description">
+                    <v-col>
+                        <p>{{ hoverEvent.extendedProps.description }}</p>
+                    </v-col>
                 </v-card-text>
-                <v-card-actions>
-                <v-btn color="primary" @click="showDialog = false">Chiudi</v-btn>
-                </v-card-actions>
             </v-card>
-            </v-dialog>
+        </v-menu>
     </v-card>
 </template>
 
 <script>
+import { ref } from 'vue';
+
 import FullCalendar from '@fullcalendar/vue3'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
@@ -33,9 +34,8 @@ export default {
     data() {
         return {
             showDialog: false,
-            dialogX: 0,
-            dialogY: 0,
-            eventTitle: "",
+            hoverEvent: '',
+            menuActivator: ref(null),
         }
     },
     computed: {
@@ -44,10 +44,12 @@ export default {
             'userDeadlinesList',
         ]),
         formattedUserDeadlines() {
+            console.log(this.userDeadlinesList)
             return this.userDeadlinesList.map(x => ({
                 title: x.title,
                 date: x.date,
                 deadlined: x.id,
+                description: x.description,
             }))
             ;
         },
@@ -66,11 +68,13 @@ export default {
     },
     methods: {
         onEventMouseEnter(info) {
-            console.log('Hovered over info:', info);
-            this.showDialog = true;
-            this.eventTitle = "Evento su " + info.event._def.title;
-            this.dialogX = info.jsEvent.x + 10; // Leggermente spostato a destra
-            this.dialogY = info.jsEvent.y + 10; // Leggermente spostato in basso
+            if (!this.showDialog) {
+                this.menuActivator = info.el;
+                this.hoverEvent = info.event;
+                this.$nextTick(() => {
+                    this.showDialog = true;
+                });
+            }
         },
         onDateClick(day) {
             console.log('Clicked on day:', day);
