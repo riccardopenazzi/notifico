@@ -3,7 +3,7 @@
             class="pa-3 mx-auto"
             style="background-color: #1e1e1e;"
             elevation="0"
-            max-width="400"
+            :max-width="formWidth"
             >
         <v-form
                 @submit.prevent="execLogin">
@@ -84,6 +84,9 @@ export default {
                     && this.form.data.email 
                     && this.form.data.password
                     ;
+        },
+        formWidth() {
+            return this.$vuetify.display.smAndDown ? '100%' : '400';
         },
     },
     methods: {

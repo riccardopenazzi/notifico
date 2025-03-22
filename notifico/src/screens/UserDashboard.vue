@@ -4,13 +4,13 @@
 			<h1 class="ml-3 mt-2">{{`Dashboard di ${userInfo.data.name}`}}</h1>
 		</v-row>
 		<v-row>
-			<v-col cols="6">
+			<v-col cols="6" class="d-none d-md-block">
 				<CalendarComponent></CalendarComponent>
 			</v-col>
-			<v-col cols="1"></v-col>
-			<v-col cols="4">
-				<AddDeadlineFormPanel></AddDeadlineFormPanel>
-				<NextDeadlinesPanel class="mt-5"></NextDeadlinesPanel>
+			<v-col cols="1" class="d-none d-md-block"></v-col>
+			<v-col cols="12" md="4">
+				<AddDeadlineFormPanel class="mb-5"></AddDeadlineFormPanel>
+				<NextDeadlinesPanel></NextDeadlinesPanel>
 			</v-col>
 		</v-row>
 	</v-container>
