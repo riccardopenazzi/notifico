@@ -39,7 +39,7 @@
         <v-row class="mt-5 d-flex justify-center">
             <div>Non hai un account?</div>
             <div 
-                    class="cursor-pointer"
+                    class="cursor-pointer text-primary text-decoration-underline"
                     @click="onSignupClick"
                     >
                 Registrati

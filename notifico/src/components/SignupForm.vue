@@ -93,7 +93,7 @@
         <v-row class="mt-5 d-flex justify-center">
             <div>Hai già un account?</div>
             <div 
-                    class="cursor-pointer"
+                    class="cursor-pointer text-primary text-decoration-underline"
                     @click="onLoginClick"
                     >
                 Accedi
