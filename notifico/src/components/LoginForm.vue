@@ -1,6 +1,9 @@
 <template>
     <v-card
-            class="pa-3 bg-primary"
+            class="pa-3 mx-auto"
+            style="background-color: #1e1e1e;"
+            elevation="0"
+            max-width="400"
             >
         <v-form
                 @submit.prevent="execLogin">
@@ -9,8 +12,9 @@
                     label="Email"
                     required
                     type="email"
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="emailRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-text-field
@@ -18,18 +22,29 @@
                     label="Password"
                     required
                     type="password"
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="passwordRules"
+                    class="mb-3"
                     >
             </v-text-field>
             <v-btn
-                    color="success"
-                    prepend-icon="mdi-check"
+                    color="primary"
                     type="submit"
+                    width="100%"
+                    class="rounded-xl"
                     >
                 Accedi
             </v-btn>
         </v-form>
+        <v-row class="mt-5 d-flex justify-center">
+            <div>Non hai un account?</div>
+            <div 
+                    class="cursor-pointer text-primary text-decoration-underline"
+                    @click="onSignupClick"
+                    >
+                Registrati
+            </div>
+        </v-row>
     </v-card>
 </template>
 
@@ -103,10 +118,14 @@ export default {
                     })
                     ;
         },
+        onSignupClick() {
+            this.$emit('signupClick');
+        },
     },
     mounted() {
     },
     components: {
     },
+    emits: ['signupCick'],
 }
 </script>

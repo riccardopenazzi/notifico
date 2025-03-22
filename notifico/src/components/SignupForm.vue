@@ -1,6 +1,9 @@
 <template class="signup-form--wrapper">
     <v-card
-            class="pa-3 bg-primary signup-form--card"
+            class="pa-3 mx-auto signup-form--card"
+            style="background-color: #1e1e1e;"
+            elevation="0"
+            max-width="400"
             >
         <v-form
                 @submit.prevent="execSignup">
@@ -8,16 +11,18 @@
                     v-model="form.data.name"
                     label="Nome"
                     required
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="nameRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-text-field
                     v-model="form.data.surname"
                     label="Cognome"
                     required
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="surnameRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-text-field
@@ -25,8 +30,9 @@
                     label="Email"
                     required
                     type="email"
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="emailRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-text-field
@@ -34,8 +40,9 @@
                     label="Password"
                     required
                     type="password"
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="passwordRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-text-field
@@ -43,17 +50,20 @@
                     label="Conferma password"
                     required
                     type="password"
-                    variant="outlined"
+                    variant="solo-filled"
                     :rules="checkPasswordRules"
+                    class="mb-3 rounded-xl"
                     >
             </v-text-field>
             <v-radio-group
                     label="Avatar"
                     v-model="form.data.avatar"
-                    class="d-flex justify-center"
+                    class="d-flex"
                     :rules="avatarRules"
                     >
-                <v-row class="d-flex justify-center mt-2">
+                <v-row 
+                        class="d-flex justify-space-between align-center mt-2"
+                        >
                     <v-radio
                             v-for="(avatar, index) in avatarsList"
                             :key="index"
@@ -72,13 +82,23 @@
                 </v-row>
             </v-radio-group>
             <v-btn
-                    color="success"
-                    prepend-icon="mdi-check"
+                    color="primary"
                     type="submit"
+                    width="100%"
+                    class="rounded-xl mt-8"
                     >
                 Registrati
             </v-btn>
         </v-form>
+        <v-row class="mt-5 d-flex justify-center">
+            <div>Hai già un account?</div>
+            <div 
+                    class="cursor-pointer text-primary text-decoration-underline"
+                    @click="onLoginClick"
+                    >
+                Accedi
+            </div>
+        </v-row>
     </v-card>
 </template>
 
@@ -185,24 +205,42 @@ export default {
                     })
                     ;
         },
+        onLoginClick() {
+            this.$emit('loginClick');
+        },
     },
     mounted() {
     },
     components: {
     },
+    emits: ['loginCick'],
 }
 </script>
 
-<style lang="scss">
+<style>
+/* Nasconde il cerchio di selezione dei radio */
 .signup-form--card .v-selection-control__input {
     display: none;
 }
+
+/* Stile per gli avatar */
 .avatar-radio {
+    flex: 1; /* Ogni avatar occupa lo stesso spazio */
+    display: flex;
+    justify-content: center; /* Centra l'immagine all'interno del contenitore */
+    align-items: center;
     cursor: pointer;
 }
+
+/* Stile per l'avatar selezionato */
 .selected-avatar {
     border: 3px solid green;
     border-radius: 50%;
     padding: 1px;
+}
+
+/* Aggiunge margine tra gli avatar */
+.v-row {
+    gap: 10px; /* Spaziatura uniforme tra gli avatar */
 }
 </style>
