@@ -9,7 +9,7 @@
                 >
             <v-card 
                     class="mx-auto text-center py-5 px-4"
-                    width="500" 
+                    :width="cardWidth" 
                     elevation="10" 
                     style="background-color: #1e1e1e; color: white;"
                     >
@@ -27,7 +27,7 @@
             </v-card>
         </div>
 
-        <div class="right-section d-flex justify-center">
+        <div class="right-section d-none d-md-flex justify-center">
             <div class="right-text-container text-center">
                 <h1 style="color: #fff;">Benvenuto su Notifico</h1>
                 <p style="color: #fff; font-size: 18px;">La tua piattaforma per notifiche personalizzate</p>
@@ -62,6 +62,9 @@ export default {
         ]),
         cardTitle() {
             return this.currentScreen == 'login' ? 'Accedi' : 'Registrati';
+        },
+        cardWidth() {
+            return this.$vuetify.display.smAndDown ? '90%' : '500';
         },
     },
     methods: {

@@ -3,7 +3,7 @@
             class="pa-3 mx-auto signup-form--card"
             style="background-color: #1e1e1e;"
             elevation="0"
-            max-width="400"
+            :max-width="formWidth"
             >
         <v-form
                 @submit.prevent="execSignup">
@@ -168,6 +168,9 @@ export default {
                     && this.form.data.avatar
                     && this.form.data.password === this.form.data.confirmPassword
                     ;
+        },
+        formWidth() {
+            return this.$vuetify.display.smAndDown ? '100%' : '400';
         },
     },
     methods: {

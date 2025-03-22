@@ -63,6 +63,22 @@ export default {
                 dateClick: this.onDateClick,
                 eventMouseEnter: this.onEventMouseEnter,
                 eventMouseLeave: this.onEventMouseLeave,
+                titleFormat: {
+                    month: 'long',
+                    year: 'numeric',
+                },
+                customButtons: {
+                    //Trovato su stackoverflow, se mi servirà per aggiungere pulsanti poi
+                },
+                datesSet: (info) => {
+                    const titleElement = document.querySelector('.fc-toolbar-title');
+                    if (titleElement) {
+                        const originalTitle = info.view.title;
+                        if (titleElement.textContent !== originalTitle.charAt(0).toUpperCase() + originalTitle.slice(1)) {
+                            titleElement.textContent = originalTitle.charAt(0).toUpperCase() + originalTitle.slice(1);
+                        }
+                    }
+                },
             };
         },
     },
